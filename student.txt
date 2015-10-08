@@ -1,0 +1,56 @@
+ int main(void) {
+
+  printf("this is a test")
+  int y = 0
+ float q = 1.0
+ float qqqqq = 1.000
+ int q = +1
+ int yy = -1
+  int x = 3;
+  float y = 3.141592653589793238462643;
+float yyyyy = 3.141592653589793238462643;
+  char z = 'y'
+
+  printf("sdfsfasdfsaftest")
+  int aXvararar = 3234234;
+  float aNiceVariabley = 3.141592653589793238462643;
+  char az = 'y234'
+  // commenting this out
+ return 'asd' + 234 + -56.7890
+}                                              
+
+int this_is_a_test(int a, int y){ return
+ min(a,x) }
+
+int fun(
+           int first,
+           int  last /* this is the last */
+         ){
+   return     minimum (first,last)
+
+}            
+
+)
+
+z = 3.141592653589793238462643
+q = 3.141592653589793238462643 + 12;
+
+int this_is_a_test2(int a, int y){ return
+ min(a,x) }                 
+
+
+int this_is_a_testaa2(int a, int y){ return
+ min(a,x) } 
+
+ /*  this is a test
+ mul
+   
+
+
+
+
+
+
+
+
+*/ 
