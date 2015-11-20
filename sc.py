@@ -1,5 +1,5 @@
 #!/usr/bin/python2.7 -tt
-#
+
 import constants
 import os
 import pickle
@@ -53,9 +53,9 @@ def get_prediction_info(FEATURES_HEADER,features,duplications,xp_duplications,po
     df2 = df[constants.CLASSIFY_BY_ONLY_COLS]
     score_num = 0
     score_denom = 0
-
-    
-
+    #
+    #
+    #
     with open(absfn, 'rb') as f:
       randomforestmodel = pickle.load(f)
       predicted_nums = randomforestmodel.predict(df2) # predicted_num = 0 or 1
@@ -63,7 +63,7 @@ def get_prediction_info(FEATURES_HEADER,features,duplications,xp_duplications,po
       predicted_num = predicted_nums[0]  
 
     matrix_of_stats.append(['Statistic', 'Your Grade', 'Ideas to Improve', None])
-
+    #
     MULT_FACTOR = 1
     if constants.PRO_CODE_PREDICTION != predicted_num: MULT_FACTOR = STUDENT_MULT_FACTOR
     for val in vals:
@@ -80,13 +80,13 @@ def get_prediction_info(FEATURES_HEADER,features,duplications,xp_duplications,po
       score_num += min(BONUS_POINTS_MAX, temp*MULT_FACTOR)
       score_denom += 1
       matrix_of_stats.append([val[PRETTY_NAME],get_html_label_for_stat(ispro),val[IMPROVE_DESC],val[HTML_STR]])
-      
+    #  
     thescore = min(1, score_num / (score_denom+1))
     scorestr = '%.0f%%' %(thescore*100)
-
+    #
   except Exception as e:
     sys.stderr.write("get_prediction: Unexpected error: "+str(e))
-  
+  #
   return (constants.PRO_CODE_PREDICTION,predicted_num,scorestr,matrix_of_stats)
 
 
@@ -106,29 +106,29 @@ def write_model_to_file_and_return_for_fun(model,fn):
   with open(fn, 'wb') as f:
     pickle.dump(model, f)
     f.close()
-
+  #
   with open(fn, 'rb') as f:
     returned_model = pickle.load(f)
     f.close()
     return returned_model
-
+  #
   return None
 
 #
 def get_roc(clf, X, Y):
   acc = clf.score(X,Y)
-
+  #
   Y_score = clf.decision_function(X)
   fpr = dict()
   tpr = dict()
   fpr, tpr, _ = metrics.roc_curve(Y, Y_score)
-
+  #
   roc_auc = dict()
   roc_auc = metrics.auc(fpr, tpr)
-
+  #
   return (roc_auc,fpr,tpr)
-
-    
+#
+#   
 #   
 def plot_roc(auc_train,fpr_train,tpr_train,auc_test,fpr_test,tpr_test):
   plt.figure(figsize=(4,4))
@@ -143,50 +143,50 @@ def plot_roc(auc_train,fpr_train,tpr_train,auc_test,fpr_test,tpr_test):
   plt.plot(fpr_test, tpr_test, label='%-6s  AUC = %.2f' %('Test:',auc_test))        
   plt.legend(loc="lower right", shadow=True, fancybox =True) 
   plt.show
-
-
-
+#
+#
+#
 #
 def make_model(model_out_fn, DEBUG = False):
-
+  #
   good_df = pd.read_csv(constants.GOOD_CSV)
   bad_df = pd.read_csv(constants.BAD_CSV)
   complete_dataset = pd.concat([good_df,bad_df])
   complete_targets = [1]*len(good_df) + [0]*len(bad_df)
-
+  #
   complete_dataset = complete_dataset[constants.CLASSIFY_BY_ONLY_COLS]
   (training_new, test_new, training_target, test_target) = cross_validation.train_test_split( \
       complete_dataset, complete_targets, test_size=0.6, random_state=0)
-
+  #
   model = GradientBoostingClassifier(min_samples_split=1, random_state=5, max_features=len(constants.CLASSIFY_BY_ONLY_COLS))
   model.fit(training_new,training_target)
   fi = model.feature_importances_
   max_fi = max(fi)
-
+  #
   model = write_model_to_file_and_return_for_fun(model,model_out_fn)
-
-
+  #
+  #
   if DEBUG:
     print(model)
     print max_fi 
-  
+    #
     print 'TEST METRICS'
     expected = test_target
     predicted = model.predict(test_new)
     print(metrics.classification_report(expected, predicted))
     print(metrics.confusion_matrix(expected, predicted))
-
+    #
     print 'TRAINING METRICS'
     expected = training_target
     predicted = model.predict(training_new)
     print(metrics.classification_report(expected, predicted))
     print(metrics.confusion_matrix(expected, predicted))
-
+    #
     (auc_train,fpr_train,tpr_train) = get_roc(model, training_new, training_target)
     (auc_test,fpr_test,tpr_test) = get_roc(model, test_new, test_target)
     plot_roc(auc_train,fpr_train,tpr_train,auc_test,fpr_test,tpr_test)
     plt.show()
-
+    #
     ## just for sanity check
     predicted = model.predict(training_new)
     print 'TRAINING METRICS (using model saved to .pkl)'
