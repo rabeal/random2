@@ -34,7 +34,19 @@ def get_prediction_info(FEATURES_HEADER,features,duplications,xp_duplications,po
     HTML_STR = 4
     vals = []
 
+    vals.append(['orig_dup_mean_div_count','Copy & Paste Profile',constants.COPY_PASTE_MOST_PROS_SCORE,'Better leverage constructs like loops and functions.  When you copy and paste code, think this: there must be a better way!  It is very difficult to maintain multiple segments of redundant code.',duplications])
+   
+    vals.append(['xp_dup_mean_div_count','Copy, Paste, & Replace Profile',constants.COPY_PASTE_REPLACE_MOST_PROS_SCORE,'Copy, paste, & replace occurs when you have code that you like and you copy/paste and then make some variable/identifier replacements to solve the current problem.  In this case, look to functions with nice parameter lists.  It is extremely difficult to maintain copy/paste/replace code.  Consider the changes you would need if you later find a bug in a copy/paste/replace segment.',xp_duplications])
 
+    vals.append(['count_small_identifier_percent','Identifier Length',constants.SMALL_IDENTIFIER_PERCENT_PROS_SCORE,'Short variable names make it simpler to code your program.  However, in the long run, when you reassess your code, it will take longer to understand and debug.  Further, newbies to your system will have a much larger learning curve to understand your code.  So, it is good practice to use longer identifier names.',poor_identifier_display])
+
+    vals.append(['identifier_creativity_uppercase_underscore_percent','Identifier Style',constants.IDENTIFIER_CREATIVITY_PROS_SCORE,'The most readable identifier names are those that look like this: a_variable_name, aVariableName, and CONSTANT.  Professional code will include such identifier styles.',''])
+
+    vals.append(['magic_numbers_per_number','CONSTANTS',constants.MAGIC_NUMBERS_PER_NUMBER_PROS_SCORE,'In a source file, when you find yourself hard-coding a number like 12.32 two or more times, then you should declare a constant instead.  We call these reoccurring numbers *magic* numbers.  It is much easier to maintain one constant than many hard-coded values. ',magic_numbers_display])
+
+    vals.append(['generality_flag','Generality',constants.GENERALITY_FLAG_PROS_SCORE,'Writing professional code does not include hard-coded print statements to the terminal; you should be able to print to files, error streams, or the monitor with ease.  If you need to include print statements to the monitor, in C for example, a more general way to is use fprintf with stdout.  The same sentiment goes for input. ',''])
+
+    vals.append(['comment_lines_div_orig_loc','Documentation',constants.COMMENT_LINES_DIV_ORIG_LOC_PROS_SCORE,'Including comments in your code is important for many reasons. Comments help document sophisticated segments of source code.  They help you read and understand code that you wrote months ago or code that you are inheriting.  While it is impractical that every function have a block comment stating its description, preconditions, and postconditions, you definitely should focus on documenting your most sophisticated functions.',''])
 
 
 
@@ -181,5 +193,16 @@ def make_model(model_out_fn, DEBUG = False):
     print(metrics.confusion_matrix(expected, predicted))
 
 
+'''
+
+
+
+
+
+
+
+
+
+'''
 
 
